@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+
+         version="3.1">
+
+
+
+    <!--
+    Тут описываются конфиги для Spring.
+    1) Всем MVC в Spring занимается DispatcherServlet.
+    Поэтому создаём один DispatcherServlet с именем TodoWeb (в servlet-class прописываем путь прокачки)
+    2) После этой инициализации фреймворк попытается загрузить "application context",
+    в котором будут описываться дополнительные возможности в этом сервлете, необходимые для веба.
+    Его путь мы прописываем в contextConfigLocation.
+    Объявление listener нужно, если мы изменяем у application context стандартный путь и стандартное имя
+    (по умолчанию путь в WEB-INF, имя [servlet-name]-servlet.xml (как у нас)
+    3) После объявления вступает в дело servlet-mapping. Здесь мы пишем у какого сервлета-спринга
+    по каким url может работать в HTTP request (про responce пока хз, может и он тоже).
+    Пишем что будет /.../....*.jsp всё. Или / - любой URL.
+    4) Пути пишем в соответствии с ресурсной базой (поэтому понимает сразу /WEB-INF/..)
+    -->
+
+    <display-name>Spring MVC Application</display-name>
+
+
+
+    <servlet>
+        <servlet-name>SearchServiceWeb</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/SearchServiceWeb-servlet.xml</param-value>
+    </context-param>
+
+    <servlet-mapping>
+        <servlet-name>SearchServiceWeb</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <listener>
+        <listener-class>
+            org.springframework.web.context.ContextLoaderListener
+        </listener-class>
+    </listener>
+
+
+    <!--
+    filter для delete/put-запросов
+    jsp 2.3 не поддерживает put/delete запросы....
+    -->
+
+    <filter>
+        <filter-name>httpMethodFilter</filter-name>
+        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>httpMethodFilter</filter-name>
+        <servlet-name>SearchServiceWeb</servlet-name>
+    </filter-mapping>
+
+
+</web-app>

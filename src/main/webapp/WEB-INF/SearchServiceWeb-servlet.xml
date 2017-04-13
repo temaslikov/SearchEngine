@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+
+    <!--
+        В base-package прописываем, в какой папке активировать Spring-MVC определение аннотаций
+        (@Controller и т.д.)
+        InternalResourceViewResolver помогает определить полный путь для view в MVC.
+        То есть после этого когда мы напишем hello в view, то он превратит в /views/hello.jsp
+        -->
+
+    <context:component-scan base-package="ru.temaslikov.searchEngine.web" />
+
+    <!-- Configures the @Controller programming model-->
+    <mvc:annotation-driven/>
+
+    <!-- Resolve jsp's -->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/views/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+
+
+    <!-- Forwards requests to the "/" resource to the "index2" view -->
+    <!-- <mvc:view-controller path="/" view-name="index2"/> -->
+
+
+</beans>
